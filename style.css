@@ -34,6 +34,13 @@ h1, h2 {
     border-bottom: solid 1px rgb(216, 222, 228);
 }
 
+blockquote {
+    margin: 0;
+    padding: 0 1em;
+    color: rgb(101, 109, 118);
+    border-left: 0.25em solid rgb(208, 215, 222);
+}
+
 table {
     border-collapse: collapse;
 }
