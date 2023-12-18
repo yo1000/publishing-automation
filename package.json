@@ -1,0 +1,25 @@
+{
+  "name": "publishing-automation",
+  "version": "1.0.0",
+  "description": "Publish markdown files to PDF",
+  "main": "index.js",
+  "scripts": {
+    "build": "node index.js",
+    "build-demo": "SRC_DIR=./demo DST_DIR=./dst node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yo1000/publishing-automation.git"
+  },
+  "author": "yo1000",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yo1000/publishing-automation/issues"
+  },
+  "homepage": "https://github.com/yo1000/publishing-automation#readme",
+  "dependencies": {
+    "md-to-pdf": "^5.2.4"
+  }
+}
+
