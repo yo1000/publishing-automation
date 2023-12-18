@@ -1,3 +1,26 @@
+@font-face {
+    font-family: "MPLUS1";
+    src: url("./fonts/MPLUS1-VariableFont_wght.ttf");
+}
+
+@font-face {
+    font-family: "MPLUS1Code";
+    src: url("./fonts/MPLUS1Code-VariableFont_wght.ttf");
+}
+
+@font-face {
+    font-family: "NotoColorEmoji";
+    src: url("./fonts/NotoColorEmoji-Regular.ttf");
+}
+
+html {
+    font-family: "MPLUS1", "NotoColorEmoji";
+}
+
+code {
+    font-family: "MPLUS1Code", "NotoColorEmoji";
+}
+
 .page-break {
     page-break-after: always;
 }
