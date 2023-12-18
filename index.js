@@ -40,11 +40,17 @@ const config = require(`./config`);
     });
 
     const document = new DOMParser().parseFromString(html.content);
-    const headings = xpath.select(`//h1/text()`, document);
+    const headings = xpath.select(`//*[self::h1 or self::h2]`, document);
 
-    let tableOfContent = headings.map(node => (
-        `- ${node.nodeValue}`
-    )).join(`\n`);
+    let tableOfContent = headings
+        .map((node, index) => (
+            node.tagName.toLowerCase() === `h1`
+                ? `- [${node.firstChild.nodeValue.trim()}](#${node.attributes[0].nodeValue.trim()})`
+                : node.tagName.toLowerCase() === `h2`
+                    ? `    - [${node.firstChild.nodeValue.trim()}](#${node.attributes[0].nodeValue.trim()})`
+                    : ``
+        ))
+        .join(`\n`);
     tableOfContent = `# ${tableOfContentHeading}\n\n${tableOfContent}`;
 
     if (mergedMdContent.startsWith(`<div class="page-break"></div>\n`)) {

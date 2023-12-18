@@ -1,7 +1,7 @@
 module.exports = {
     stylesheet: [`./style.css`],
     marked_options: {
-        headerIds: false,
+        headerIds: true,
         smartypants: true,
     },
     pdf_options: {
