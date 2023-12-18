@@ -19,7 +19,8 @@
   },
   "homepage": "https://github.com/yo1000/publishing-automation#readme",
   "dependencies": {
-    "md-to-pdf": "^5.2.4"
+    "md-to-pdf": "^5.2.4",
+    "xmldom": "^0.6.0",
+    "xpath": "^0.0.34"
   }
 }
-

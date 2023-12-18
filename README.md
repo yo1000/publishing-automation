@@ -3,6 +3,7 @@ publishing-automation
 
 Publish markdown files to PDF
 
+
 Requirements & Setup
 ----------------------------------------
 
@@ -28,9 +29,19 @@ sudo apt install libgtk-3-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasou
 How to Build
 ----------------------------------------
 
-### Demo
+### Build demo
 
 ```bash
 npm run build-demo
 ```
 
+
+### Build with options
+
+```bash
+AS_HTML=false \
+TOC_HEAD='Table of content' \
+SRC_DIR='./demo' \
+DST_DIR='./dst' \
+npm run build
+```

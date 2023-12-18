@@ -1,0 +1,50 @@
+.page-break {
+    page-break-after: always;
+}
+
+pre,
+pre code.hljs {
+    background: rgb(246, 248, 250);
+}
+
+h1, h2 {
+    border-bottom: solid 1px rgb(216, 222, 228);
+}
+
+table {
+    border-collapse: collapse;
+}
+
+tr th,
+tr td {
+    border: solid 1px rgb(208, 215, 222);
+    padding: 6px 13px;
+}
+
+tr {
+    background: rgb(255, 255, 255);
+}
+
+tr:nth-child(2n) {
+    background: rgb(246, 248, 250);
+}
+
+.markdown-body code,
+.markdown-body tt {
+    padding: 0.2em 0.4em;
+    margin: 0;
+    font-size: 85%;
+    white-space: break-spaces;
+    background-color: rgba(175, 184, 193, 0.2);
+    border-radius: 6px;
+}
+
+.markdown-body pre code,
+.markdown-body pre tt {
+    padding: inherit;
+    margin: inherit;
+    font-size: inherit;
+    white-space: inherit;
+    background-color: inherit;
+    border-radius: inherit;
+}
