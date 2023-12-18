@@ -22,7 +22,7 @@ const { mdToPdf } = require(`md-to-pdf`);
         .replace(/\r/, `\n`)
 
     mergedMdContent = mergedMdContent
-        .replace(/^(.+\n={1,})$/gm, `<div class="page-break"></div>\n\n$1`)
+        .replace(/^(.+\n=+)$/gm, `<div class="page-break"></div>\n\n$1`)
         .replace(/^(#[ \t]+[^\n]+)$/gm, `<div class="page-break"></div>\n\n$1`)
         .trim()
 
