@@ -59,6 +59,11 @@ tr:nth-child(2n) {
     background: rgb(246, 248, 250);
 }
 
+sup a {
+    text-decoration: none;
+    font-style: italic; 
+}
+
 ul:has(sub) {
     list-style: none;
     padding: 0;
