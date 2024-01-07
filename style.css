@@ -59,6 +59,31 @@ tr:nth-child(2n) {
     background: rgb(246, 248, 250);
 }
 
+ul:has(sub) {
+    list-style: none;
+    padding: 0;
+}
+
+li:has(sub) {
+    margin: 0;
+    line-height: .75rem;
+}
+
+.ok li {
+    list-style-type: '✅';
+    padding-left: .5rem;
+}
+
+.ng li {
+    list-style-type: '❌';
+    padding-left: .5rem;
+}
+
+.warn li {
+    list-style-type: '⚠';
+    padding-left: .5rem;
+}
+
 .markdown-body code,
 .markdown-body tt {
     padding: 0.2em 0.4em;
