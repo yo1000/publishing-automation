@@ -39,9 +39,11 @@ npm run build-demo
 ### Build with options
 
 ```bash
-AS_HTML=false \
+DEBUG=true \
 TOC_HEAD='Table of content' \
 SRC_DIR='./demo' \
 DST_DIR='./dst' \
 npm run build
 ```
+
+When `DEBUG=true`, HTML version will be output in addition to PDF.
