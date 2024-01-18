@@ -40,6 +40,8 @@ npm run build-demo
 
 ```bash
 DEBUG=true \
+TITLE='Demo title' \
+AUTHOR='Demo Author' \
 TOC_HEAD='Table of content' \
 SRC_DIR='./demo' \
 DST_DIR='./dst' \

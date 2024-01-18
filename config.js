@@ -1,6 +1,6 @@
 module.exports = {
-    title: `Demo | デモ`,
-    author: `yo1000`,
+    title: `Demo title`,
+    author: `Demo Author`,
     stylesheets: [`./style.css`],
     fonts: {
         proportional: [`./fonts/NotoSansJP-VariableFont_wght.ttf`],

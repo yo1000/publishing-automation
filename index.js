@@ -12,6 +12,8 @@ const config = require(`./config`);
 (async () => {
     try {
         const debug = process.env.DEBUG === `true`;
+        const title = process.env.TITLE ?? config.title;
+        const author = process.env.AUTHOR ?? config.author;
         const tableOfContentHeading = process.env.TOC_HEAD ?? `Table of content`;
         const srcDir = process.env.SRC_DIR ?? `./demo`;
         const dstDir = process.env.DST_DIR ?? `./dst`;
@@ -53,45 +55,45 @@ const config = require(`./config`);
         <html lang="en">
             <head>
             <meta charset="utf-8">
-            <title>${config.title}</title>
+            <title>${title}</title>
             ${config?.fonts?.proportional?.length ? `
-              <style>
-              @font-face {
-                  font-family: "Proportional";
-                  src: ${config.fonts.proportional
-            .map(fontPath => (
-                `url(data:font/ttf;base64,${fs.readFileSync(
-                    path.resolve(fontPath), {encoding: 'base64'}
-                )})`))
-            .join(`,`)};
-              }
-              </style>
+                <style>
+                @font-face {
+                    font-family: "Proportional";
+                    src: ${config.fonts.proportional
+                        .map(fontPath => (
+                            `url(data:font/ttf;base64,${fs.readFileSync(
+                            path.resolve(fontPath), {encoding: 'base64'}
+                            )})`))
+                        .join(`,`)};
+                }
+                </style>
             ` : ``}
             ${config?.fonts?.monospace?.length ? `
-              <style>
-              @font-face {
-                  font-family: "Monospace";
-                  src: ${config.fonts.monospace
-            .map(fontPath => (
-                `url(data:font/ttf;base64,${fs.readFileSync(
-                    path.resolve(fontPath), {encoding: 'base64'}
-                )})`))
-            .join(`,`)};
-              }
+                <style>
+                @font-face {
+                    font-family: "Monospace";
+                    src: ${config.fonts.monospace
+                        .map(fontPath => (
+                            `url(data:font/ttf;base64,${fs.readFileSync(
+                            path.resolve(fontPath), {encoding: 'base64'}
+                            )})`))
+                        .join(`,`)};
+                }
               </style>
             ` : ``}
             ${config?.fonts?.emoji?.length ? `
-              <style>
-              @font-face {
-                  font-family: "Emoji";
-                  src: ${config.fonts.emoji
-            .map(fontPath => (
-                `url(data:font/ttf;base64,${fs.readFileSync(
-                    path.resolve(fontPath), {encoding: 'base64'}
-                )})`))
-            .join(`,`)};
-              }
-              </style>
+                <style>
+                @font-face {
+                    font-family: "Emoji";
+                    src: ${config.fonts.emoji
+                        .map(fontPath => (
+                            `url(data:font/ttf;base64,${fs.readFileSync(
+                            path.resolve(fontPath), {encoding: 'base64'}
+                            )})`))
+                        .join(`,`)};
+                }
+                </style>
             ` : ``}
             <style>
             html {
@@ -179,11 +181,11 @@ const config = require(`./config`);
         coverDivElement.style.top = `calc(1.2in - ${config.pdfOptions.margin.top})`
         const coverH1Element = coverDivElement.appendChild(doc.createElement(`h1`));
         coverH1Element.classList.add(`title`);
-        coverH1Element.textContent = config.title;
+        coverH1Element.textContent = title;
         const coverAuthorDivElement = coverDivElement.appendChild(doc.createElement(`div`));
         coverAuthorDivElement.classList.add(`author`);
         const coverH2Element = coverAuthorDivElement.appendChild(doc.createElement(`h2`));
-        coverH2Element.textContent = config.author;
+        coverH2Element.textContent = author;
         const coverParagraphElement = coverAuthorDivElement.appendChild(doc.createElement(`p`));
         coverParagraphElement.textContent = new Date().toDateString();
 
