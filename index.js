@@ -63,7 +63,7 @@ const config = require(`./config`);
                     src: ${config.fonts.proportional
                         .map(fontPath => (
                             `url(data:font/ttf;base64,${fs.readFileSync(
-                            path.resolve(fontPath), {encoding: 'base64'}
+                                path.resolve(fontPath), {encoding: 'base64'}
                             )})`))
                         .join(`,`)};
                 }
@@ -76,7 +76,7 @@ const config = require(`./config`);
                     src: ${config.fonts.monospace
                         .map(fontPath => (
                             `url(data:font/ttf;base64,${fs.readFileSync(
-                            path.resolve(fontPath), {encoding: 'base64'}
+                                path.resolve(fontPath), {encoding: 'base64'}
                             )})`))
                         .join(`,`)};
                 }
@@ -89,7 +89,7 @@ const config = require(`./config`);
                     src: ${config.fonts.emoji
                         .map(fontPath => (
                             `url(data:font/ttf;base64,${fs.readFileSync(
-                            path.resolve(fontPath), {encoding: 'base64'}
+                                path.resolve(fontPath), {encoding: 'base64'}
                             )})`))
                         .join(`,`)};
                 }
@@ -162,8 +162,8 @@ const config = require(`./config`);
             tocElement.append(liElement);
         }
         let firstElement = doc.querySelector(`body > *:first-child`);
-        firstElement.parentNode.insertBefore(tocTitleElement, firstElement);
-        firstElement.parentNode.insertBefore(tocElement, firstElement);
+        firstElement?.parentNode?.insertBefore(tocTitleElement, firstElement);
+        firstElement?.parentNode?.insertBefore(tocElement, firstElement);
 
         //// Page break
         const h1Elements = doc.querySelectorAll(`h1:not(:first-child)`);
@@ -193,8 +193,8 @@ const config = require(`./config`);
         pageBreakElement.setAttribute(`class`, `page-break`);
 
         firstElement = doc.querySelector(`body > *:first-child`);
-        firstElement.parentNode.insertBefore(coverDivElement, firstElement);
-        firstElement.parentNode.insertBefore(pageBreakElement, firstElement);
+        firstElement?.parentNode?.insertBefore(coverDivElement, firstElement);
+        firstElement?.parentNode?.insertBefore(pageBreakElement, firstElement);
 
         //// Output
         const outputHtml = dom.serialize();
