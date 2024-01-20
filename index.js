@@ -51,68 +51,68 @@ const config = require(`./config`);
         }));
 
         const html = `
-        <!DOCTYPE html>
-        <html lang="en">
-            <head>
-            <meta charset="utf-8">
-            <title>${title}</title>
-            ${config?.fonts?.proportional?.length ? `
+            <!DOCTYPE html>
+            <html lang="en">
+                <head>
+                <meta charset="utf-8">
+                <title>${title}</title>
+                ${config?.fonts?.proportional?.length ? `
+                    <style>
+                    @font-face {
+                        font-family: "Proportional";
+                        src: ${config.fonts.proportional
+                            .map(fontPath => (
+                                `url(data:font/ttf;base64,${fs.readFileSync(
+                                    path.resolve(fontPath), {encoding: 'base64'}
+                                )})`))
+                            .join(`,`)};
+                    }
+                    </style>
+                ` : ``}
+                ${config?.fonts?.monospace?.length ? `
+                    <style>
+                    @font-face {
+                        font-family: "Monospace";
+                        src: ${config.fonts.monospace
+                            .map(fontPath => (
+                                `url(data:font/ttf;base64,${fs.readFileSync(
+                                    path.resolve(fontPath), {encoding: 'base64'}
+                                )})`))
+                            .join(`,`)};
+                    }
+                  </style>
+                ` : ``}
+                ${config?.fonts?.emoji?.length ? `
+                    <style>
+                    @font-face {
+                        font-family: "Emoji";
+                        src: ${config.fonts.emoji
+                            .map(fontPath => (
+                                `url(data:font/ttf;base64,${fs.readFileSync(
+                                    path.resolve(fontPath), {encoding: 'base64'}
+                                )})`))
+                            .join(`,`)};
+                    }
+                    </style>
+                ` : ``}
                 <style>
-                @font-face {
-                    font-family: "Proportional";
-                    src: ${config.fonts.proportional
-                        .map(fontPath => (
-                            `url(data:font/ttf;base64,${fs.readFileSync(
-                                path.resolve(fontPath), {encoding: 'base64'}
-                            )})`))
-                        .join(`,`)};
+                html {
+                    font-family: "Proportional", "Emoji", sans-serif;
+                }
+                code {
+                    font-family: "Monospace", "Proportional", "Emoji", monospace;
+                }
+                .page-break {
+                    page-break-after: always;
                 }
                 </style>
-            ` : ``}
-            ${config?.fonts?.monospace?.length ? `
-                <style>
-                @font-face {
-                    font-family: "Monospace";
-                    src: ${config.fonts.monospace
-                        .map(fontPath => (
-                            `url(data:font/ttf;base64,${fs.readFileSync(
-                                path.resolve(fontPath), {encoding: 'base64'}
-                            )})`))
-                        .join(`,`)};
-                }
-              </style>
-            ` : ``}
-            ${config?.fonts?.emoji?.length ? `
-                <style>
-                @font-face {
-                    font-family: "Emoji";
-                    src: ${config.fonts.emoji
-                        .map(fontPath => (
-                            `url(data:font/ttf;base64,${fs.readFileSync(
-                                path.resolve(fontPath), {encoding: 'base64'}
-                            )})`))
-                        .join(`,`)};
-                }
-                </style>
-            ` : ``}
-            <style>
-            html {
-                font-family: "Proportional", "Emoji", sans-serif;
-            }
-            code {
-                font-family: "Monospace", "Proportional", "Emoji", monospace;
-            }
-            .page-break {
-                page-break-after: always;
-            }
-            </style>
-            ${config?.stylesheets?.map(css => `<style>${fs.readFileSync(css)}</style>`).join(``)}
-            </head>
-            <body>
-                ${marked.parse(mergedMdContent)}
-            </body>
-        </html>
-    `;
+                ${config?.stylesheets?.map(css => `<style>${fs.readFileSync(css)}</style>`).join(``)}
+                </head>
+                <body>
+                    ${marked.parse(mergedMdContent)}
+                </body>
+            </html>
+        `;
 
         const dom = new JSDOM(html);
         const doc = dom.window.document;
@@ -127,8 +127,8 @@ const config = require(`./config`);
         }
 
         //// Image path
-        const ImgElements = doc.querySelectorAll(`img`);
-        for (const imgElement of ImgElements) {
+        const imgElements = doc.querySelectorAll(`img`);
+        for (const imgElement of imgElements) {
             const ext = path.extname(imgElement.getAttribute(`src`)).toLowerCase();
             if (ext === `.png`) {
                 imgElement.setAttribute(`src`, `data:image/png;base64,${fs.readFileSync(
@@ -146,55 +146,56 @@ const config = require(`./config`);
         }
 
         //// Table of content
-        const tocTitleElement = doc.createElement(`h1`);
-        tocTitleElement.textContent = tableOfContentHeading;
+        const tocInsertPositionElement = doc.querySelector(`body > *:first-child`);
 
-        const tocHeadings = doc.querySelectorAll(`h1, h2`);
-        let tocElement = doc.createElement(`ul`);
-        for (const tocHeading of tocHeadings) {
-            const liElement = doc.createElement(`li`);
-            const aElement = doc.createElement(`a`);
+        const tocHeadingElement = tocInsertPositionElement?.parentNode?.insertBefore(
+            doc.createElement(`h1`), tocInsertPositionElement);
+        tocHeadingElement.textContent = tableOfContentHeading;
+
+        const tocListElement = tocInsertPositionElement?.parentNode?.insertBefore(
+            doc.createElement(`ul`), tocInsertPositionElement);
+
+        const headingElements = doc.querySelectorAll(`h1, h2`);
+        for (const tocHeading of headingElements) {
+            const liElement = tocListElement.appendChild(doc.createElement(`li`));
+            const aElement = liElement.appendChild(doc.createElement(`a`));
 
             aElement.setAttribute(`href`, `#${tocHeading.getAttribute(`id`)}`);
             aElement.textContent = tocHeading.textContent;
-
-            liElement.append(aElement);
-            tocElement.append(liElement);
         }
-        let firstElement = doc.querySelector(`body > *:first-child`);
-        firstElement?.parentNode?.insertBefore(tocTitleElement, firstElement);
-        firstElement?.parentNode?.insertBefore(tocElement, firstElement);
 
         //// Page break
-        const h1Elements = doc.querySelectorAll(`h1:not(:first-child)`);
-        for (const h1Element of h1Elements) {
-            const pageBreakElement = doc.createElement(`div`);
+        const pageBreakInsertPositionElements = doc.querySelectorAll(`h1:not(:first-child)`);
+        for (const h1Element of pageBreakInsertPositionElements) {
+            const pageBreakElement = h1Element.parentNode.insertBefore(doc.createElement(`div`), h1Element);
             pageBreakElement.setAttribute(`class`, `page-break`);
-
-            h1Element.parentNode.insertBefore(pageBreakElement, h1Element);
         }
 
         //// Cover page
-        const coverDivElement = doc.createElement(`div`);
+        const coverInsertPosisionElement = doc.querySelector(`body > *:first-child`);
+
+        const coverDivElement = coverInsertPosisionElement?.parentNode?.insertBefore(
+            doc.createElement(`div`), coverInsertPosisionElement);
         coverDivElement.classList.add(`cover`);
         coverDivElement.style.height = `calc(8in - ${config.pdfOptions.margin.top})`
         coverDivElement.style.top = `calc(1.2in - ${config.pdfOptions.margin.top})`
+
         const coverH1Element = coverDivElement.appendChild(doc.createElement(`h1`));
         coverH1Element.classList.add(`title`);
         coverH1Element.textContent = title;
+
         const coverAuthorDivElement = coverDivElement.appendChild(doc.createElement(`div`));
         coverAuthorDivElement.classList.add(`author`);
+
         const coverH2Element = coverAuthorDivElement.appendChild(doc.createElement(`h2`));
         coverH2Element.textContent = author;
+
         const coverParagraphElement = coverAuthorDivElement.appendChild(doc.createElement(`p`));
         coverParagraphElement.textContent = new Date().toDateString();
 
-        const pageBreakElement = doc.createElement(`div`);
-        pageBreakElement.setAttribute(`class`, `page-break`);
-
-        firstElement = doc.querySelector(`body > *:first-child`);
-        firstElement?.parentNode?.insertBefore(coverDivElement, firstElement);
-        firstElement?.parentNode?.insertBefore(pageBreakElement, firstElement);
+        const coverPageBreakElement = coverInsertPosisionElement?.parentNode?.insertBefore(
+            doc.createElement(`div`), coverInsertPosisionElement);
+        coverPageBreakElement.setAttribute(`class`, `page-break`);
 
         //// Output
         const outputHtml = dom.serialize();
