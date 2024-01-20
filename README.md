@@ -42,6 +42,7 @@ npm run build-demo
 DEBUG=true \
 TITLE='Demo title' \
 AUTHOR='Demo Author' \
+REVISION='1.0' \
 TOC_HEAD='Table of content' \
 SRC_DIR='./demo' \
 DST_DIR='./dst' \

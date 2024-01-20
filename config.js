@@ -1,6 +1,7 @@
 module.exports = {
     title: `Demo title`,
     author: `Demo Author`,
+    revision: `1.0.0`,
     stylesheets: [`./style.css`],
     fonts: {
         proportional: [`./fonts/NotoSansJP-VariableFont_wght.ttf`],
@@ -28,7 +29,7 @@ module.exports = {
                         border-top: solid 1px rgb(216, 222, 228); 
                 ">
                     <div style="position: absolute; left: 5px; top: 5px;">
-                        <span>${new Date().toDateString()}</span>
+                        <span>rev: </span><span class="revision"></span>
                     </div>
                     <div style="position: absolute; right: 5px; top: 5px;">
                         <span class="pageNumber"></span>/<span class="totalPages"></span>

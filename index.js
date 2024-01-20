@@ -1,5 +1,6 @@
 const fs = require(`fs`);
 const path = require(`path`);
+const crypto = require(`crypto`);
 const {JSDOM} = require('jsdom');
 const {Marked} = require('marked');
 const {gfmHeadingId} = require(`marked-gfm-heading-id`);
@@ -12,6 +13,7 @@ const config = require(`./config`);
 (async () => {
     try {
         const debug = process.env.DEBUG === `true`;
+        const revision = process.env.REVISION ?? config.revision;
         const title = process.env.TITLE ?? config.title;
         const author = process.env.AUTHOR ?? config.author;
         const tableOfContentHeading = process.env.TOC_HEAD ?? `Table of content`;
@@ -114,6 +116,8 @@ const config = require(`./config`);
             </html>
         `;
 
+        const rev = revision ?? await crypto.createHash(`sha256`).update(html).digest(`hex`).slice(0, 8);
+
         const dom = new JSDOM(html);
         const doc = dom.window.document;
 
@@ -191,11 +195,26 @@ const config = require(`./config`);
         coverH2Element.textContent = author;
 
         const coverParagraphElement = coverAuthorDivElement.appendChild(doc.createElement(`p`));
-        coverParagraphElement.textContent = new Date().toDateString();
+        coverParagraphElement.textContent = rev;
 
         const coverPageBreakElement = coverInsertPosisionElement?.parentNode?.insertBefore(
             doc.createElement(`div`), coverInsertPosisionElement);
         coverPageBreakElement.setAttribute(`class`, `page-break`);
+
+        //// Header and Footer
+        const headerDom = new JSDOM(config.pdfOptions.headerTemplate ?? `<html></html>`);
+        const headerDoc = headerDom.window.document;
+        const headerRevElements = headerDoc.querySelectorAll(`.revision`);
+        for (const headerRevElement of headerRevElements) {
+            headerRevElement.textContent = rev;
+        }
+
+        const footerDom = new JSDOM(config.pdfOptions.footerTemplate ?? `<html></html>`);
+        const footerDoc = footerDom.window.document;
+        const footerRevElements = footerDoc.querySelectorAll(`.revision`);
+        for (const footerRevElement of footerRevElements) {
+            footerRevElement.textContent = rev;
+        }
 
         //// Output
         const outputHtml = dom.serialize();
@@ -210,6 +229,8 @@ const config = require(`./config`);
         await page.setContent(outputHtml);
         await page.pdf({
             ...config.pdfOptions,
+            headerTemplate: headerDom.serialize(),
+            footerTemplate: footerDom.serialize(),
             path: `${dstDir}/${srcDirName}.pdf`,
         });
 
