@@ -179,10 +179,10 @@ const config = require(`./config`);
         }
 
         //// Cover page
-        const coverInsertPosisionElement = doc.querySelector(`body > *:first-child`);
+        const coverInsertPositionElement = doc.querySelector(`body > *:first-child`);
 
-        const coverDivElement = coverInsertPosisionElement?.parentNode?.insertBefore(
-            doc.createElement(`div`), coverInsertPosisionElement);
+        const coverDivElement = coverInsertPositionElement?.parentNode?.insertBefore(
+            doc.createElement(`div`), coverInsertPositionElement);
 
         if (coverDivElement) {
             coverDivElement.classList.add(`cover`);
@@ -202,8 +202,8 @@ const config = require(`./config`);
             const coverParagraphElement = coverAuthorDivElement.appendChild(doc.createElement(`p`));
             coverParagraphElement.textContent = rev;
 
-            const coverPageBreakElement = coverInsertPosisionElement?.parentNode?.insertBefore(
-                doc.createElement(`div`), coverInsertPosisionElement);
+            const coverPageBreakElement = coverInsertPositionElement?.parentNode?.insertBefore(
+                doc.createElement(`div`), coverInsertPositionElement);
             coverPageBreakElement.setAttribute(`class`, `page-break`);
         }
 
