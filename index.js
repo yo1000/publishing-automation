@@ -154,18 +154,21 @@ const config = require(`./config`);
 
         const tocHeadingElement = tocInsertPositionElement?.parentNode?.insertBefore(
             doc.createElement(`h1`), tocInsertPositionElement);
-        tocHeadingElement.textContent = tableOfContentHeading;
 
-        const tocListElement = tocInsertPositionElement?.parentNode?.insertBefore(
-            doc.createElement(`ul`), tocInsertPositionElement);
+        if (tocHeadingElement) {
+            tocHeadingElement.textContent = tableOfContentHeading;
 
-        const headingElements = doc.querySelectorAll(`h1, h2`);
-        for (const tocHeading of headingElements) {
-            const liElement = tocListElement.appendChild(doc.createElement(`li`));
-            const aElement = liElement.appendChild(doc.createElement(`a`));
+            const tocListElement = tocInsertPositionElement?.parentNode?.insertBefore(
+                doc.createElement(`ul`), tocInsertPositionElement);
 
-            aElement.setAttribute(`href`, `#${tocHeading.getAttribute(`id`)}`);
-            aElement.textContent = tocHeading.textContent;
+            const headingElements = doc.querySelectorAll(`h1, h2`);
+            for (const tocHeading of headingElements) {
+                const liElement = tocListElement.appendChild(doc.createElement(`li`));
+                const aElement = liElement.appendChild(doc.createElement(`a`));
+
+                aElement.setAttribute(`href`, `#${tocHeading.getAttribute(`id`)}`);
+                aElement.textContent = tocHeading.textContent;
+            }
         }
 
         //// Page break
@@ -180,26 +183,29 @@ const config = require(`./config`);
 
         const coverDivElement = coverInsertPosisionElement?.parentNode?.insertBefore(
             doc.createElement(`div`), coverInsertPosisionElement);
-        coverDivElement.classList.add(`cover`);
-        coverDivElement.style.height = `calc(8in - ${config.pdfOptions.margin.top})`
-        coverDivElement.style.top = `calc(1.2in - ${config.pdfOptions.margin.top})`
 
-        const coverH1Element = coverDivElement.appendChild(doc.createElement(`h1`));
-        coverH1Element.classList.add(`title`);
-        coverH1Element.textContent = title;
+        if (coverDivElement) {
+            coverDivElement.classList.add(`cover`);
+            coverDivElement.style.height = `calc(8in - ${config.pdfOptions.margin.top})`
+            coverDivElement.style.top = `calc(1.2in - ${config.pdfOptions.margin.top})`
 
-        const coverAuthorDivElement = coverDivElement.appendChild(doc.createElement(`div`));
-        coverAuthorDivElement.classList.add(`author`);
+            const coverH1Element = coverDivElement.appendChild(doc.createElement(`h1`));
+            coverH1Element.classList.add(`title`);
+            coverH1Element.textContent = title;
 
-        const coverH2Element = coverAuthorDivElement.appendChild(doc.createElement(`h2`));
-        coverH2Element.textContent = author;
+            const coverAuthorDivElement = coverDivElement.appendChild(doc.createElement(`div`));
+            coverAuthorDivElement.classList.add(`author`);
 
-        const coverParagraphElement = coverAuthorDivElement.appendChild(doc.createElement(`p`));
-        coverParagraphElement.textContent = rev;
+            const coverH2Element = coverAuthorDivElement.appendChild(doc.createElement(`h2`));
+            coverH2Element.textContent = author;
 
-        const coverPageBreakElement = coverInsertPosisionElement?.parentNode?.insertBefore(
-            doc.createElement(`div`), coverInsertPosisionElement);
-        coverPageBreakElement.setAttribute(`class`, `page-break`);
+            const coverParagraphElement = coverAuthorDivElement.appendChild(doc.createElement(`p`));
+            coverParagraphElement.textContent = rev;
+
+            const coverPageBreakElement = coverInsertPosisionElement?.parentNode?.insertBefore(
+                doc.createElement(`div`), coverInsertPosisionElement);
+            coverPageBreakElement.setAttribute(`class`, `page-break`);
+        }
 
         //// Header and Footer
         const headerDom = new JSDOM(config.pdfOptions.headerTemplate ?? `<html></html>`);
