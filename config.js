@@ -11,14 +11,14 @@ module.exports = {
     pdfOptions: {
         format: `A4`,
         margin: {
-            top: `0.4in`,
+            top: `0.5in`,
             right: `0.4in`,
             bottom: `1.2in`,
             left: `0.4in`
         },
         printBackground: true,
         displayHeaderFooter: true,
-        headerTemplate: `<div/>`,
+        headerTemplate: `<div></div>`,
         footerTemplate: `
             <div style="
                     position: relative; width: 100%; padding: 0 0.4in 0.4in;
